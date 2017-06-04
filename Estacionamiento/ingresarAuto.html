@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ingresar auto</title>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript">
+    
+    function ingresarAuto()
+    {
+        $.ajax({
+          type:"POST",
+          url:"administrar.php",
+          data:$("#form").serialize()+"&op="+"altaAuto",
+          success: function(data)
+           {
+                alert(data);
+           }
+      })
+    }
+    
+    </script>
+</head>
+<body>
+    <form id="form">
+        <input type="text" name="patente" id="patente" placeholder="Ingrese Patente"></br>
+        <input type="text" name="color" id="color" placeholder="Ingrese Color"></br>
+        <input type="text" name="marca" id="marca" placeholder="Ingrese Marca"></br>
+        <input type="button" value="Ingresar Auto" onclick="ingresarAuto()">
+    </form>
+</body>
+</html>
