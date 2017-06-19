@@ -1,5 +1,46 @@
 <?php 
 
+
+
+switch ($_POST["optipo"])
+{
+    case 'normal':
+
+        $pdo = new PDO("mysql:host=localhost;dbname=estacionamiento","root","");
+
+        $consulta = $pdo->prepare("SELECT * FROM `estacionamiento` WHERE condicion='nadie' and reservado='normal'");
+        $consulta->execute();
+        $array=$consulta->fetchall(PDO::FETCH_ASSOC);
+            echo "<option value=''>--Seleccionar Piso y Cochera--</option>";
+        for ($i=0; $i < count($array); $i++) { 
+                echo "<option value='".$array[$i]["cochera"]."'>".$array[$i]["cochera"]."</option>";
+        }
+
+/*
+        echo "<option value='banfield'>Banfield</option>";
+        echo "<option value='lomasDeZamora'>Lomas de Zamora</option>";
+        echo "<option value='monteChingolo'>Monte Chingolo</option>";
+        echo "<option value='ezpeleta'>Ezpeleta City</option>";*/
+        break;
+    case 'especial':
+        $pdo = new PDO("mysql:host=localhost;dbname=estacionamiento","root","");
+
+        $consulta = $pdo->prepare("SELECT * FROM `estacionamiento` WHERE condicion='nadie' and reservado='especial'");
+        $consulta->execute();
+        $array=$consulta->fetchall(PDO::FETCH_ASSOC);
+            echo "<option value=''>--Seleccionar Piso y Cochera--</option>";
+        for ($i=0; $i < count($array); $i++) { 
+                echo "<option value='".$array[$i]["cochera"]."'>".$array[$i]["cochera"]."</option>";
+        }
+        break;
+    default:
+        echo "";
+        break;
+}
+
+
+
+/*
 require_once "Auto.php";
 
 if($_POST["op"]=="altaAuto")
@@ -9,34 +50,9 @@ if($_POST["op"]=="altaAuto")
         $patente=$_POST["patente"];
         $color=$_POST["color"];
         $marca=$_POST["marca"];
-        $hora=date("G");
-        $dia=date("j");
-        $mes=date("n");
-        $anio=date("Y");
+        $fechaInicial=getdate();
 
-        $pdo=new PDO("mysql:dbname=estacionamiento","root","");
-        $consulta=$pdo->prepare("INSERT INTO `autos`(`patente`, `color`, `marca`, `hora`, `dia`, `mes`, `anio`) 
-        VALUES ($patente,$color,$marca,$hora,$dia,$mes,$anio");
-/*
-        $consulta->bindParam(":patente",$_POST["patente"]);
-        $consulta->bindParam(":color",$_POST["color"]);
-        $consulta->bindParam(":marca",$_POST["marca"]);
-        $hora=date("G");
-        $dia=date("j");
-        $mes=date("n");
-        $anio=date("Y");
-        $consulta->bindParam(":hora",$hora);
-        $consulta->bindParam(":dia",$dia);
-        $consulta->bindParam(":mes",$mes);
-        $consulta->bindParam(":anio",$anio);*/
-
-        $band=$consulta->execute();
-
-        if($band)
-            echo "true";
-            else echo "false";
-
-        $auto=new Auto($_POST["patente"],$_POST["color"],$_POST["marca"],$hora,$dia,$mes,$anio);
+        $auto=new Auto($_POST["patente"],$_POST["color"],$_POST["marca"],$fechaInicial);
 
         Auto::agregarListaAutos($auto);
 
@@ -47,5 +63,5 @@ if($_POST["op"]=="altaAuto")
         echo $e->getMessage();
     }
 }
-
+*/
 ?>

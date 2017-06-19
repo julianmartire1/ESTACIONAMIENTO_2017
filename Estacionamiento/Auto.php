@@ -1,27 +1,17 @@
 <?php
 
-
-/**
- * 
- */
 class Auto 
 {
     private $_patente;
     private $_color;
     private $_marca;
-    private $_hora;
-    private $_dia;
-    private $_mes;
-    private $_anio;
-    function __construct($patente,$color,$marca,$hora,$dia,$mes,$anio)
+    private $_fechaInicial;
+    function __construct($patente,$color,$marca,$fechaInicial)
     {
         $this->_patente=$patente;
         $this->_color=$color;
         $this->_marca=$marca;
-        $this->_hora=$hora;
-        $this->_dia=$dia;
-        $this->_mes=$mes;
-        $this->_anio=$anio;
+        $this->_fechaInicial=$fechaInicial;
     }
 
     function getPatente()
@@ -39,32 +29,108 @@ class Auto
         return $this->_marca;
     }
 
-    function getHora()
+    function getFechaInicial()
     {
-        return $this->_hora;
+        return $this->_fechaInicial;
     }
 
-    function getDia()
+    public static function agregarVehiculo($patente,$color,$marca,$fechaIngreso)
     {
-        return $this->_dia;
+        $pdo = new PDO("mysql:host=localhost;dbname=estacionamiento","root","");
+
+        $auxPatente = $patente;
+        $auxColor = $color;
+        $auxMarca = $marca;
+        $auxFechaIngreso = $fechaIngreso;
+        $auxNumero=1;
+
+        $consulta = $pdo->prepare("INSERT INTO `autos`(`patente`, `color`, `marca`, `fechaInicial`,`esta`) VALUES (:patente,:color,:marca,:fechaInicial,:esta)");
+        $consulta->bindParam(":patente",$auxPatente);
+        $consulta->bindParam(":color",$auxColor);
+        $consulta->bindParam(":marca",$auxMarca);
+        $consulta->bindParam(":fechaInicial",$auxFechaIngreso);
+        $consulta->bindParam(":esta",$auxNumero);
+        $consulta->execute();
+
+        return true;
     }
 
-    function getMes()
+    public static function listarAutos()
     {
-        return $this->_mes;
+        try{
+            $pdo = new PDO("mysql:host=localhost;dbname=estacionamiento","root","");
+            $consulta = $pdo->prepare("SELECT `patente`, `color`, `marca`, `fechaInicial` FROM `autos` ORDER BY patente");
+            $consulta->execute();
+            
+            $array=$consulta->fetchall(PDO::FETCH_ASSOC);
+
+            return $array;
+
+        } catch(PDOException $err){
+            return array("Error" => $err->getMessage());
+        }
     }
 
-    function getAnio()
+    public static function buscarLugarEstacionamiento($piso)
     {
-        return $this->_anio;
+
+        $array=array();
+        try{
+            $pdo = new PDO("mysql:host=localhost;dbname=estacionamiento","root","");
+            $consulta = $pdo->prepare("SELECT `auto`, `condicion`, `reservado`, `cantidad`, `cochera` FROM `estacionamiento` WHERE cochera='$piso' and condicion='nadie'");
+            $consulta->execute();
+            
+            //return $consulta;
+            $array=$consulta->fetchall(PDO::FETCH_ASSOC);
+
+            //return var_dump($array);
+            //return count($array);
+
+            foreach ($array as $item) {
+                if($item["condicion"]=="nadie")
+                    return true;
+                else return false;
+            }
+
+        } catch(PDOException $err){
+            return array("Error" => $err->getMessage());
+        }
     }
 
-    public static function agregarListaAutos($auto)
+    public static function agregarAutoAlEstacionamiento($array)
     {
-        $listaAutos=array();
+        $pdo2 = new PDO("mysql:host=localhost;dbname=estacionamiento","root","");
 
-        array_push($listaAutos,$auto);
+        //return var_dump($array);
+
+        if(Auto::buscarLugarEstacionamiento($array["cochera"])==true){
+        
+          $auto=Auto::agregarVehiculo($array["patente"],$array["color"],$array["marca"],$array["fechaInicial"]);
+          $piso=$array["cochera"];
+          $patente=$array["patente"];
+          $consulta2 = $pdo2->prepare("UPDATE `estacionamiento` SET `auto`='$patente',`condicion`='ocupado',`cantidad`=`cantidad`+1 WHERE `cochera`='$piso' and condicion='nadie'");
+
+          $consulta2->execute();
+          return true;
+        }
+        else return false;
     } 
+
+    public static function retirarAuto($patente)
+    {
+        $pdo1 = new PDO("mysql:host=localhost;dbname=estacionamiento","root","");
+        $consulta1 = $pdo1->prepare("UPDATE `estacionamiento` SET `auto`='nadie',`condicion`='nadie' WHERE `auto`='$patente'");
+        $consulta1->execute();
+
+        $pdo2 = new PDO("mysql:host=localhost;dbname=estacionamiento","root","");
+        $consulta2 = $pdo2->prepare("UPDATE `autos` SET `esta`=0 WHERE patente='$patente'");
+        $consulta2->execute();
+
+        if($consulta1 == false && $consulta2 == false)
+        return false;
+        else
+        return true;
+    }
 }
 
 
