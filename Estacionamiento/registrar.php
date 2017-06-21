@@ -107,7 +107,13 @@ $Empleado["estado"]="activo";
 				//echo '<pre>' . $result . '</pre>';
                 if($result=="agregado")
                     echo '<script language="javascript">alert("Empleado Agregado");</script>'; 
-                    else echo '<script language="javascript">alert("No se pudo agregar");</script>'; 
+                    else
+                    {
+                        if($result="existe")
+                        echo '<script language="javascript">alert("EL usuario ya existe");</script>';
+                        else
+                        echo '<script language="javascript">alert("No se pudo agregar");</script>'; 
+                    }
 				
 			}
 		}

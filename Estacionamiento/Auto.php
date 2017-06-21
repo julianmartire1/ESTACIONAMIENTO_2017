@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set("America/Buenos_Aires");
 class Auto 
 {
     private $_patente;
@@ -59,7 +59,7 @@ class Auto
     {
         try{
             $pdo = new PDO("mysql:host=localhost;dbname=estacionamiento","root","");
-            $consulta = $pdo->prepare("SELECT `patente`, `color`, `marca`, `fechaInicial` FROM `autos` ORDER BY patente");
+            $consulta = $pdo->prepare("SELECT `patente`, `color`, `marca`, `fechaInicial`,`esta` FROM `autos` ORDER BY patente");
             $consulta->execute();
             
             $array=$consulta->fetchall(PDO::FETCH_ASSOC);
@@ -118,6 +118,15 @@ class Auto
 
     public static function retirarAuto($patente)
     {
+
+        $array=Auto::listarAutos();
+
+        foreach ($array as $item) {
+            if($item["patente"] == $patente && $item["esta"]==0)
+                return false;
+        }
+
+        //return $patente;
         $pdo1 = new PDO("mysql:host=localhost;dbname=estacionamiento","root","");
         $consulta1 = $pdo1->prepare("UPDATE `estacionamiento` SET `auto`='nadie',`condicion`='nadie' WHERE `auto`='$patente'");
         $consulta1->execute();
@@ -126,10 +135,61 @@ class Auto
         $consulta2 = $pdo2->prepare("UPDATE `autos` SET `esta`=0 WHERE patente='$patente'");
         $consulta2->execute();
 
-        if($consulta1 == false && $consulta2 == false)
+        if($consulta1==true && $consulta2==true)
+            return true;
+    }
+/*-Cobro por hora $10, media estadía $90 (12hs) o estadía $170
+(24hs)*/
+    public static function calcularCosto($fechaIngreso)
+    {
+        $ingreso=strtotime($fechaIngreso);
+        $ahora=strtotime(date("Y-m-d H:i:s"));
+
+        $diferencia=$ahora - $ingreso;
+        $i=0;
+
+        while($diferencia>=86400)
+        {
+            $diferencia=$diferencia-86400;
+            $i++;
+        }
+
+        $resultado=$i*170;
+
+        if($diferencia <= 43200 && $diferencia >= 32400)
+            $resultado=$resultado + 90;
+        else 
+        {
+            if($diferencia < 32400)
+                $resultado+=ceil($diferencia/60/60) *10;
+                else
+                {
+                    if($diferencia > 43200 && $diferencia < 72000)
+                    {
+                        $ceil=ceil($diferencia/60/60) - 12;
+                        $resultado=$resultado+90+$ceil*10; 
+                    }
+                    else
+                        $resultado+=170;
+                    
+                }
+        }
+
+
+    return $resultado;
+        
+    }
+
+    public static function traerFechaIngreso($patente)
+    {
+        $array=Auto::listarAutos();
+
+        foreach ($array as $item) {
+            if($item["patente"] == $patente)
+                return $item["fechaInicial"];
+        }
+
         return false;
-        else
-        return true;
     }
 }
 

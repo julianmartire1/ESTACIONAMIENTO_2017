@@ -1,6 +1,7 @@
 
 
     <?php
+    date_default_timezone_set("America/Buenos_Aires");
     use \Psr\Http\Message\ServerRequestInterface as Request;
     use \Psr\Http\Message\ResponseInterface as Response;
 
@@ -108,27 +109,24 @@
       $app->put('/vehiculo',
       function(Request $request,Response $response )
       {
-          $band=false;
-          $ArrayDeParametros = $request->getParsedBody();
+        $ArrayDeParametros = $request->getParsedBody();
 
-          $patente= $ArrayDeParametros['patente'];
-          return $patente;
-          return var_dump($ArrayDeParametros);
+        $band=false;
+        $patente= $ArrayDeParametros['patente'];
+        $band=Auto::retirarAuto($patente);
+        if($band==false)
+            $json["opcion"] = "No se puede retirar";
+        else
+        {
+            $fInicial=Auto::traerFechaIngreso($patente);
+            if($fInicial==false)
+                $json["opcion"] = "Error al encontrar la fecha";
+            else
+                $json["opcion"] = "Tiene que pagar ".Auto::calcularCosto($fInicial)."$";
+        }
 
-          $band=Auto::retirarAuto($patente);
-          
 
-          if($band2==true)
-            {
-                $json["opcion"] = "Auto retirado";
-                return json_encode($json["opcion"]);                
-            }
-          else
-          {
-              $json["opcion"] = "No existe el auto";
-              return json_encode($json["opcion"]);
-          }
-
+            return json_encode($json["opcion"]);
           
 
       });

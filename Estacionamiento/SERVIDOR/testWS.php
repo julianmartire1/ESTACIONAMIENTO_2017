@@ -117,6 +117,13 @@ $server->wsdl->addComplexType(
 
  function agregarEmpleado($Empleado)
  {
+    $arrayDeEmpleados = Empleado::TraerEmpleados();
+
+    foreach ($arrayDeEmpleados as $item) {
+        if($item["usuario"]==$Empleado["usuario"])
+        return "existe";
+    }
+
     $empleado=new Empleado($Empleado["nombre"],$Empleado["apellido"],$Empleado["legajo"],$Empleado["turno"],$Empleado["categoria"],$Empleado["usuario"],$Empleado["password"],$Empleado["estado"]);
     return "agregado";
  }

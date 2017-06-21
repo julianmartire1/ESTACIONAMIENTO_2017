@@ -14,23 +14,17 @@
     function retirarAuto()
     {
         var pagina = "http://localhost/Estacionamiento/apirest/vehiculo";
-        alert($("#patente").val());
-        var formData = new FormData();
-        formData.append("patente",$("#patente").val());
-
         $.ajax({
                 type: 'PUT',
                 url: pagina,
                 dataType: "text",
-                cache: false,
-                contentType: false,
-                processData: false,
-                data: formData,
-                async: true
+                data: {
+                    patente : $("#patente").val()
+                },
+        async: true
             })
             .done(function (objJson) {
-
-                alert(objJson);
+                alert(JSON.parse(objJson));
                 //window.location.href = "listadoAutos.php";
             })
             .fail(function (jqXHR, textStatus, errorThrown) {
