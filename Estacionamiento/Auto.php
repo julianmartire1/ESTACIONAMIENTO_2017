@@ -191,6 +191,19 @@ class Auto
 
         return false;
     }
+
+    public static function traerCochera($patente)
+    {
+        $pdo = new PDO("mysql:host=localhost;dbname=estacionamiento","root","");
+        $consulta=$pdo->prepare("SELECT `auto`, `cochera` FROM `estacionamiento` WHERE `auto`='$patente'");
+        $consulta->execute();
+        $array=$consulta->fetchall(PDO::FETCH_ASSOC);
+
+        foreach ($array as $item) {
+            if($item["auto"]==$patente)
+                return $item["cochera"];
+        }
+    }
 }
 
 

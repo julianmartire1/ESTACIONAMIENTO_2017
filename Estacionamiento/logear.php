@@ -18,6 +18,11 @@
     <title>Loguear</title>
 </head>
 <body>
+<?php
+session_start();
+if(!isset($_SESSION["admnistrador"]) && !isset($_SESSION["empleado"]))
+{
+?>
 	<div class="container">
 		<form action="logear.php" method="post">
 			</br>
@@ -99,6 +104,9 @@
 			}
 		}
 	}
+}
+else
+header("Location:menuAdmin.php");
 	
 	?>
 </body>

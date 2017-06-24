@@ -9,7 +9,7 @@
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 
-    <title>Document</title>
+    <title>Administrar Personal</title>
 </head>
 <body>
     
@@ -32,6 +32,16 @@ if (isset($_SESSION["administrador"]))
     <?php
 }
 else {
-    echo "asd";
+    if(isset($_SESSION["empleado"]))
+    {
+        echo "<script type='text/javascript'>
+        
+        alert('No es administrador');
+        window.location='menuAdmin.php';
+
+        </script>";
+    }
+    else
+        header("Location:index.php");
 }
 ?>

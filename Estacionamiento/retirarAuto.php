@@ -19,13 +19,14 @@
                 url: pagina,
                 dataType: "text",
                 data: {
-                    patente : $("#patente").val()
+                    patente : $("#patente").val(),
+                    emp : empleado
                 },
         async: true
             })
             .done(function (objJson) {
-                alert(JSON.parse(objJson));
-                //window.location.href = "listadoAutos.php";
+                alert(objJson);
+                window.location.href = "listadoAutos.php";
             })
             .fail(function (jqXHR, textStatus, errorThrown) {
             }); 
@@ -34,6 +35,26 @@
     </script>
 </head>
 <body>
+<?php
+session_start();
+if(isset($_SESSION["administrador"]) || isset($_SESSION["empleado"]))
+{
+    if(isset($_SESSION["empleado"]))
+    {
+        echo "<script type='text/javascript'>
+            
+            var empleado='".$_SESSION["empleado"]."';
+
+            </script>";
+    }
+    else {
+        echo "<script type='text/javascript'>
+            
+            var empleado='';
+
+            </script>";
+    }
+?>
     <div class="container">
         <form action="retirarAuto.php" method="POST">
             </br>
@@ -46,6 +67,9 @@
     </div>
 
     <?php
+}
+else
+    header("Location:index.php");
         ?>
 
 

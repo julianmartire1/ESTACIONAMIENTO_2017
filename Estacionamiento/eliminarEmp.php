@@ -10,6 +10,13 @@
     <title>Eliminar Empleado</title>
 </head>
 <body>
+
+<?php 
+session_start();
+if(isset($_SESSION["administrador"]))
+{
+
+?>
 	<div class="container">
 		<form action="eliminarEmp.php" method="post">
 			</br>
@@ -67,7 +74,22 @@ $usuario["usuario"]=$_POST["usuario"];
 			}
 		}
 	}
+}
+else 
+{
+	if(isset($_SESSION["empleado"]))
+    {
+        echo "<script type='text/javascript'>
+        
+        alert('No es administrador');
+        window.location='menuAdmin.php';
 
+        </script>";
+    }
+    else
+        header("Location:index.php");
+
+}
     ?>
 </body>
 </html>

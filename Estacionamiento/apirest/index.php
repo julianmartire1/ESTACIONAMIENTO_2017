@@ -53,6 +53,7 @@
           $color= $ArrayDeParametros['color'];
           $marca= $ArrayDeParametros['marca'];
           $piso=$ArrayDeParametros['cochera'];
+          $empleado=$ArrayDeParametros['empleado'];
 
       //return var_dump($ArrayDeParametros);
 
@@ -67,12 +68,15 @@
           else
           {
             foreach ($arraydeautos as $item) {
-                if($item["patente"]!=$patente)
+                if($item["patente"]==$patente)
                 {
-                    $band2=true;
-                    break;
+                    $json["opcion"] = "Ya existe el Auto";
+                    return json_encode($json["opcion"]);
                 }
-                else $band2=false;
+                else
+                {                    
+                     $band2=true;
+                }
             }
           }
 
@@ -92,7 +96,16 @@
 
           if($band)
           {
-            $json["opcion"] = "Auto Agregado";
+            $pdo = new PDO("mysql:host=localhost;dbname=estacionamiento","root","");
+
+            $auxNumero=1;
+
+            $consulta = $pdo->prepare("INSERT INTO `operaciones`(`empleado`, `operacion`, `auto`, `cochera`, `fecha`, `cantidad`) VALUES ('$empleado',$auxNumero,'$patente','$piso',NOW(),$auxNumero)");
+            $consulta->execute();
+
+
+
+            $json["opcion"] = "Auto Agregado ";
              return json_encode($json["opcion"]);
           }
           else
@@ -110,10 +123,14 @@
       function(Request $request,Response $response )
       {
         $ArrayDeParametros = $request->getParsedBody();
-
         $band=false;
         $patente= $ArrayDeParametros['patente'];
+        $empleado= $ArrayDeParametros['emp'];
+
+
         $band=Auto::retirarAuto($patente);
+
+
         if($band==false)
             $json["opcion"] = "No se puede retirar";
         else
@@ -122,7 +139,15 @@
             if($fInicial==false)
                 $json["opcion"] = "Error al encontrar la fecha";
             else
+            {
+                $pdo = new PDO("mysql:host=localhost;dbname=estacionamiento","root","");
+
+                $auxNumero=2;
+                $piso=Auto::traerCochera($patente);
+                $consulta = $pdo->prepare("INSERT INTO `operaciones`(`empleado`, `operacion`, `auto`, `cochera`, `fecha`, `cantidad`) VALUES ('$empleado',$auxNumero,'$patente','$piso',NOW(),$auxNumero)");
+                $consulta->execute();
                 $json["opcion"] = "Tiene que pagar ".Auto::calcularCosto($fInicial)."$";
+            }
         }
 
 

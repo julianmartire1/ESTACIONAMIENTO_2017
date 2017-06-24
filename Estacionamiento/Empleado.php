@@ -133,6 +133,20 @@ class Empleado
 			echo $e->getMessage();
 		}
     }
+
+    public static function TraerOperaciones()
+    {
+        try{
+            $pdo = new PDO("mysql:host=localhost;dbname=estacionamiento","root","");
+            $consulta = $pdo->prepare("SELECT `empleado`, `operacion`, `auto`, `cochera`, `fecha`, `cantidad` FROM `operaciones` WHERE 1");
+            $consulta->execute();
+
+            return $consulta->fetchall(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $err){
+            return array("ERROR" => $err->getMessage());
+        }
+    }
 }
 
 

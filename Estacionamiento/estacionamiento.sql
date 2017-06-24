@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-06-2017 a las 23:53:54
+-- Tiempo de generación: 24-06-2017 a las 21:39:41
 -- Versión del servidor: 10.1.21-MariaDB
 -- Versión de PHP: 5.6.30
 
@@ -41,12 +41,14 @@ CREATE TABLE `autos` (
 --
 
 INSERT INTO `autos` (`patente`, `color`, `marca`, `fechaInicial`, `esta`) VALUES
-('123', 'rojo', 'fiat', '2017-06-18 17:01:19', 1),
-('888', 'rojo', 'fiat', '2017-06-18 17:10:59', 1),
-('444', 'asd', 'asd', '2017-06-18 17:45:53', 1),
-('444', 'asd', 'asd', '2017-06-18 23:26:29', 1),
-('999', 'verde', 'ford', '2017-06-18 23:27:38', 1),
-('8888', 'rojo', 'fiat', '2017-06-18 23:45:51', 1);
+('123', 'rojo', 'fiat', '2017-06-24 14:42:17', 0),
+('222', 'rojo', 'fiat', '2017-06-24 14:44:13', 0),
+('444', 'rojo', 'fiat', '2017-06-24 16:03:48', 0),
+('555', 'rojo', 'fiat', '2017-06-24 16:08:43', 0),
+('222', 'rojo', 'fiat', '2017-06-24 16:20:28', 1),
+('222', 'rojo', 'fiat', '2017-06-24 16:21:39', 1),
+('222', 'rojo', 'fiat', '2017-06-24 16:22:45', 1),
+('77777', 'rojo', 'fiat', '2017-06-24 16:25:53', 1);
 
 -- --------------------------------------------------------
 
@@ -99,7 +101,7 @@ INSERT INTO `estacionamiento` (`auto`, `condicion`, `reservado`, `cantidad`, `co
 ('nadie', 'nadie', 'normal', 0, '1D'),
 ('nadie', 'nadie', 'normal', 0, '1E'),
 ('nadie', 'nadie', 'normal', 0, '1F'),
-('999', 'ocupado', 'normal', 1, '2A'),
+('nadie', 'nadie', 'normal', 0, '2A'),
 ('nadie', 'nadie', 'normal', 0, '2B'),
 ('nadie', 'nadie', 'normal', 0, '2C'),
 ('nadie', 'nadie', 'normal', 0, '2D'),
@@ -107,10 +109,42 @@ INSERT INTO `estacionamiento` (`auto`, `condicion`, `reservado`, `cantidad`, `co
 ('nadie', 'nadie', 'normal', 0, '2F'),
 ('nadie', 'nadie', 'normal', 0, '3A'),
 ('nadie', 'nadie', 'normal', 0, '3B'),
-('nadie', 'nadie', 'normal', 0, '3C'),
-('nadie', 'nadie', 'normal', 0, '3D'),
-('8888', 'ocupado', 'normal', 1, '3E'),
-('444', 'ocupado', 'normal', 1, '3F');
+('77777', 'ocupado', 'normal', 1, '3C'),
+('222', 'ocupado', 'normal', 1, '3D'),
+('222', 'ocupado', 'normal', 1, '3E'),
+('222', 'ocupado', 'normal', 5, '3F');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `operaciones`
+--
+
+CREATE TABLE `operaciones` (
+  `empleado` varchar(50) NOT NULL,
+  `operacion` int(11) NOT NULL,
+  `auto` varchar(20) NOT NULL,
+  `cochera` varchar(10) NOT NULL,
+  `fecha` datetime NOT NULL,
+  `cantidad` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `operaciones`
+--
+
+INSERT INTO `operaciones` (`empleado`, `operacion`, `auto`, `cochera`, `fecha`, `cantidad`) VALUES
+('pepe2', 1, '123', '3F', '2017-06-24 14:42:17', 1),
+('pepe2', 2, '123', '', '2017-06-24 14:42:24', 2),
+('pepe2', 1, '222', '3F', '2017-06-24 14:44:13', 1),
+('pepe2', 2, '222', '', '2017-06-24 14:49:39', 2),
+('', 1, '444', '3F', '2017-06-24 16:03:48', 1),
+('pepe2', 1, '555', '3F', '2017-06-24 16:08:43', 1),
+('pepe2', 2, '555', '', '2017-06-24 16:08:59', 2),
+('', 1, '222', '3F', '2017-06-24 16:20:28', 1),
+('', 1, '222', '3E', '2017-06-24 16:21:39', 1),
+('', 1, '222', '3D', '2017-06-24 16:22:45', 1),
+('', 1, '77777', '3C', '2017-06-24 16:25:53', 1);
 
 -- --------------------------------------------------------
 
@@ -133,7 +167,36 @@ INSERT INTO `registrolog` (`empleado`, `dia`) VALUES
 ('pepe1', '17-06-2017 17:24'),
 ('pepe1', '17-06-2017 17:25'),
 ('pepe1', '17-06-2017 17:25'),
-('pepe1', '17-06-2017 17:25');
+('pepe1', '17-06-2017 17:25'),
+('pepe2', '23-06-2017 22:30'),
+('pepe2', '23-06-2017 22:30'),
+('pepe2', '23-06-2017 22:31'),
+('pepe2', '23-06-2017 22:31'),
+('pepe2', '24-06-2017 17:58'),
+('pepe2', '24-06-2017 18:42'),
+('pepe2', '24-06-2017 18:50'),
+('pepe2', '24-06-2017 19:09'),
+('pepe2', '24-06-2017 19:22'),
+('pepe2', '24-06-2017 19:22'),
+('pepe2', '24-06-2017 19:23'),
+('pepe2', '24-06-2017 19:29'),
+('pepe2', '24-06-2017 19:30'),
+('pepe2', '24-06-2017 19:30'),
+('pepe2', '24-06-2017 19:31'),
+('pepe2', '24-06-2017 19:33'),
+('pepe2', '24-06-2017 19:33'),
+('pepe2', '24-06-2017 19:36'),
+('pepe2', '24-06-2017 19:36'),
+('pepe2', '24-06-2017 19:37'),
+('pepe2', '24-06-2017 19:42'),
+('pepe2', '24-06-2017 19:44'),
+('pepe2', '24-06-2017 19:44'),
+('pepe2', '24-06-2017 19:55'),
+('pepe2', '24-06-2017 19:56'),
+('pepe2', '24-06-2017 21:06'),
+('pepe2', '24-06-2017 21:08'),
+('pepe2', '24-06-2017 21:11'),
+('pepe2', '24-06-2017 21:11');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

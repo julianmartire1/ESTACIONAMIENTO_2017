@@ -49,13 +49,14 @@
 
         var pagina = "http://localhost/Estacionamiento/apirest/vehiculo";
 
-
+        
         var formData = new FormData();
         formData.append("patente",$("#patente").val());
         formData.append("color",$("#color").val());
         formData.append("marca",$("#marca").val());        
         formData.append("optipo",$("#optipo").val());
         formData.append("cochera",$("#cochera").val());
+        formData.append("empleado",empleado);
 
 
         //alert($("#cochera").val());
@@ -71,16 +72,40 @@
                 async: true
             })
             .done(function (objJson) {
-
                 alert(objJson);
                 window.location.href = "listadoAutos.php";
             })
             .fail(function (jqXHR, textStatus, errorThrown) {
             });    
     }
+
     </script>
 </head>
 <body>
+
+
+<?php
+session_start();
+if(isset($_SESSION["administrador"]) || isset($_SESSION["empleado"]))
+{
+    if(isset($_SESSION["empleado"]))
+    {
+        echo "<script type='text/javascript'>
+            
+            var empleado='".$_SESSION["empleado"]."';
+
+            </script>";
+    }
+    else {
+        echo "<script type='text/javascript'>
+            
+            var empleado='';
+
+            </script>";
+    }
+    
+
+?>
     <div class="container">
         <form action="ingresarAutoAdmin.php" method="POST">
             </br>
@@ -120,20 +145,11 @@
         <input class="btn btn-warning" type="button" value="Ingresar Auto" name="ingresar" onclick="ingresarAuto($('#patente').val(),$('#color').val(),$('#marca').val(),$('#optipo').val(),$('#cochera').val())"> <a href="menuAdmin.php">Volver al menu</a>
 
         
-
-        <?php
-/*
-            if(isset($_POST["ingresar"]))
-            {
-                ?>
-                <script type="text/javascript">
-                
-                ingresarAuto($('#patente').val(),$('#color').val(),$('#marca').val(),$('#optipo').val(),$('#cochera').val());
-                
-                </script>
-                <?php
-            }*/
-        ?>
+<?php
+}
+else
+    header("Location:index.php");
+?>
     </div>
 </body>
 </html>

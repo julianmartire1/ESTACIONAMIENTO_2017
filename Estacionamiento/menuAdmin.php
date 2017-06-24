@@ -41,11 +41,13 @@ if (isset($_SESSION["administrador"])) {
             <div class="btn-group">
                 <input class='btn btn-success' type='button' name='retirarAuto' value='Retirar Auto' onclick = "location='retirarAuto.php'">
             </div>
+            <div class="btn-group">
+                <input class='btn btn-success' type='button' name='registroAutos' value='Operaciones de los empleados' onclick = "location='operacionesEmp.php'">
+            </div>
             
         </div>
-        <form action='menuAdmin.php' method='post'>  
-              
-            <input class='btn btn-danger btn-block' type='submit' name='desloguear' value='Cerrar Sesion' onclick = "location='ingresarAutoAdmin.php'">
+        <form action='menuAdmin.php' method='post'>                
+            <input class='btn btn-danger btn-block' type='submit' name='desloguear' value='Cerrar Sesion'>
         </form>
         
     </div>
@@ -79,34 +81,33 @@ else {
         <h1>Bienvenido, <?php echo $_SESSION["empleado"]; ?></h1>
     </div>
     <div class='container'>
-        <input class='btn btn-success' type='button' name='agregarAuto' value='Agregar Auto' onclick = "location='ingresarAutoAdmin.php'">
-        <form action='menuAdmin.php' method='post'>            
-            <input class='btn btn-danger' type='submit' name='desloguear' value='Cerrar Sesion' onclick = "location='ingresarAutoAdmin.php'">
+        <div class="btn-group btn-group-justified">
+            <div class="btn-group">
+                <input class='btn btn-success' type='button' name='listadoAuto' value='Listado de Autos' onclick = "location='listadoAutos.php'">
+            </div>
+            <div class="btn-group">
+                <input class='btn btn-success' type='button' name='agregarAuto' value='Agregar Auto' onclick = "location='ingresarAutoAdmin.php'">
+            </div> 
+            <div class="btn-group">
+                <input class='btn btn-success' type='button' name='retirarAuto' value='Retirar Auto' onclick = "location='retirarAuto.php'">
+            </div>
+            
+        </div>
+        <form action='menuAdmin.php' method='post'>                
+            <input class='btn btn-danger btn-block' type='submit' name='desloguear' value='Cerrar Sesion'>
         </form>
+        
     </div>
 
     
 
     <?php
 
-    if(isset($_POST["desloguear"]))
-    {
-        session_destroy();
-        header("Location:logear.php");
-    }
-
-
-        if(isset($_POST["agregarAuto"]))
-        {
-            header("Location:ingresarAutoAdmin.html");
-        }
-
         if(isset($_POST["desloguear"]))
         {
             session_destroy();
             header("Location:logear.php");
         }
-
     }
     else
     {

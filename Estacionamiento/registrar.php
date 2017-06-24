@@ -10,6 +10,11 @@
     <title>Agregar Empleado</title>
 </head>
 <body>
+<?php
+session_start();
+if(isset($_SESSION["administrador"]))
+{
+?>
     <div class="container">
         <form action="registrar.php" method="post">
             </br>
@@ -118,15 +123,20 @@ $Empleado["estado"]="activo";
 			}
 		}
 	}
+}
+else{
+    if(isset($_SESSION["empleado"]))
+    {
+        echo "<script type='text/javascript'>
+        
+        alert('No es administrador');
+        window.location='menuAdmin.php';
 
-    /*private $_nombre;
-    private $_apellido;
-    private $_legajo;
-    private $_turno;
-    private $_categoria;
-    private $_usuario;
-    private $_pw;
-    private $_estado;*/
+        </script>";
+    }
+    else
+        header("Location:index.php");
+}
     ?>
 </body>
 </html>
