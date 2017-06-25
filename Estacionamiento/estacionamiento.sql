@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-06-2017 a las 21:39:41
+-- Tiempo de generación: 26-06-2017 a las 00:00:38
 -- Versión del servidor: 10.1.21-MariaDB
 -- Versión de PHP: 5.6.30
 
@@ -135,12 +135,12 @@ CREATE TABLE `operaciones` (
 
 INSERT INTO `operaciones` (`empleado`, `operacion`, `auto`, `cochera`, `fecha`, `cantidad`) VALUES
 ('pepe2', 1, '123', '3F', '2017-06-24 14:42:17', 1),
-('pepe2', 2, '123', '', '2017-06-24 14:42:24', 2),
+('pepe2', 2, '123', '', '2017-06-24 14:42:24', 1),
 ('pepe2', 1, '222', '3F', '2017-06-24 14:44:13', 1),
-('pepe2', 2, '222', '', '2017-06-24 14:49:39', 2),
+('pepe2', 2, '222', '', '2017-06-24 14:49:39', 1),
 ('', 1, '444', '3F', '2017-06-24 16:03:48', 1),
 ('pepe2', 1, '555', '3F', '2017-06-24 16:08:43', 1),
-('pepe2', 2, '555', '', '2017-06-24 16:08:59', 2),
+('pepe2', 2, '555', '', '2017-06-24 16:08:59', 1),
 ('', 1, '222', '3F', '2017-06-24 16:20:28', 1),
 ('', 1, '222', '3E', '2017-06-24 16:21:39', 1),
 ('', 1, '222', '3D', '2017-06-24 16:22:45', 1),
@@ -196,7 +196,8 @@ INSERT INTO `registrolog` (`empleado`, `dia`) VALUES
 ('pepe2', '24-06-2017 21:06'),
 ('pepe2', '24-06-2017 21:08'),
 ('pepe2', '24-06-2017 21:11'),
-('pepe2', '24-06-2017 21:11');
+('pepe2', '24-06-2017 21:11'),
+('pepe2', '25-06-2017 20:16');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

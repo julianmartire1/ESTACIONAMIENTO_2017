@@ -5,54 +5,104 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Listado de los Autos</title>
-  <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="jquery.js"></script>
+    
+    <link rel="stylesheet" href="estilos.css">
+    <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href='http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+    <script type='text/javascript' src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js'></script>
+    <script type='text/javascript' src='http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js'></script>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
 
   <script type="text/javascript">
-  window.onload=traerTodos;
 
-  function traerTodos(){
-    var pagina = "http://localhost/Estacionamiento/apirest/vehiculo";
+    function alerta()
+    {
+      alert("hola");
+    }
 
-    $.ajax({
-        type: 'GET',
-        url: pagina,
-        dataType: "json",
-        async: true
-    })
-    .done(function (objJson) {
+    $(document).ready(main);
 
-        var tablaEncabezado = "<table class='table table-bordered'>";
-        tablaEncabezado += "<tr><th>Patente</th><th>Color</th><th>Marca</th><th>Fecha de ingreso</th></tr>";
-        var tablaCuerpo = "";
-        var tablaPie = "</tr></html>";
+    var contador = 1;
 
-        for(var i=0;i<objJson.length;i++){
-            tablaCuerpo += "<tr><td>"+objJson[i]["patente"]+"</td><td>"+objJson[i]["color"];
-            tablaCuerpo += "</td><td>"+objJson[i]["marca"]+"</td><td>"+objJson[i]["fechaInicial"]+"</td>";
-            //tablaCuerpo += "</td><td><a href='modificar.php' data-id='"+objJson[i]["id"]+"' onclick='administrarModificar("+objJson[i]["id"]+")' data-toggle='modal' data-target='#myModal' class='open-Modal'>MODIFICAR</a>&nbsp;";
-          //tablaCuerpo += "&nbsp;<a href='#' onclick='eliminar("+objJson[i].id+")'>ELIMINAR</a></td></tr>";
-        }
+    function main () {
+    	$('.menu_bar').click(function(){
+    		if (contador == 1) {
+    			$('nav').animate({
+    				left: '0'
+    			});
+    			contador = 0;
+    		} else {
+    			contador = 1;
+    			$('nav').animate({
+    				left: '-100%'
+    			});
+    		}
+    	});
 
-        $("#tabla").html(tablaEncabezado+tablaCuerpo+tablaPie);
+    	// Mostramos y ocultamos submenus
+    	$('.submenu').click(function(){
+    		$(this).children('.children').slideToggle();
+    	});
+    }
 
-    })
-    .fail(function (jqXHR, textStatus, errorThrown) {
-        alert(jqXHR.responseText + "\n" + textStatus + "\n" + errorThrown);
-    });    
-
-}
-  
-  </script>
+    </script>
 </head>
 <body>
+    <?php
+    require_once "Empleado.php";
+session_start();
+    ?>
+
+    <header>
+  		<div class="menu_bar">
+  			  <a href="#" style="color:#fff" class="bt-menu">Menú<span class="glyphicon glyphicon-th-list"></span></a>
+  		</div>
+
+  		<nav>
+      			<ul>
+      				<li><a href="menuAdmin.php" style="color:#fff"><span class="glyphicon glyphicon-home"></span>Inicio</a></li>
+      				<li class="submenu">
+        					<a href="#" style="color:#fff"><span class="glyphicon glyphicon-road"></span>Autos<span class="caret icon-arrow-down6"></span></a>
+        					<ul class="children">
+                    <li><a href="ingresarAutoAdmin.php" style="color:#fff;">Agregar <span class="glyphicon glyphicon-record"></span></a></li>
+                    <li><a href="retirarAuto.php"style="color:#fff;">Retirar <span class="glyphicon glyphicon-record"></span></a></li>
+        					</ul>
+      				</li>
+              <li class="submenu">
+        					<a href="#" style="color:#fff"><span class="glyphicon glyphicon-user"></span>Empleados<span class="caret icon-arrow-down6"></span></a>
+        					<ul class="children">
+                    <li><a href="registrar.php" style="color:#fff;">Agregar <span class="glyphicon glyphicon-record"></span></a></li>
+                    <li><a href="suspender.php"style="color:#fff;">Suspender <span class="glyphicon glyphicon-record"></span></a></li>
+                    <li><a href="eliminarEmp.php" style="color:#fff;">Eliminar <span class="glyphicon glyphicon-record"></span></a></li>
+        					</ul>
+      				</li>
+              <li class="submenu">
+        					<a href="#" style="color:#fff;background:#e6344a;"><span class="glyphicon glyphicon-folder-open"></span>Registros<span class="caret icon-arrow-down6"></span></a>
+        					<ul class="children">
+                    <li><a href="empLogeado.php" style="color:#fff;">Empleados Logueados<span class="glyphicon glyphicon-record"></span></a></li>
+                    <li><a href="operacionesEmp.php"style="color:#fff;">Autos Registrados<span class="glyphicon glyphicon-record"></span></a></li>
+        					</ul>
+      				</li>
+              <li class="submenu">
+                    <a href="#" style="color:#fff;"><span class="glyphicon glyphicon-list-alt"></span>Listados<span class="caret icon-arrow-down6"></span></a>
+                    <ul class="children">
+                        <li><a href="listadoAutos.php" style="color:#fff;">Autos<span class="glyphicon glyphicon-record"></span></a></li>
+                    </ul>
+              </li>
+                <li style="float:right;" id="lili" >
+                      <a href="cerrarSesion.php" style="color:#fff;"><span class="glyphicon glyphicon-log-out"></span>Log out</a>
+                </li>
+
+      			</ul>
+  		</nav>
+	  </header>
+    
 <div class="container">
 </br>
+
 <?php
-require_once "Empleado.php";
-session_start();
+
 if(isset($_SESSION["administrador"]))
 {//`empleado`, `operacion`, `auto`, `cochera`, `fecha`, `cantidad`
         $array=Empleado::TraerOperaciones();
@@ -70,6 +120,7 @@ if(isset($_SESSION["administrador"]))
             continue;
             if($array[$i]["operacion"]==1)
             {
+                
                 ?>
                 <tr>
                     <td>  <?php echo $array[$i]["empleado"]; ?> </td><td>  <?php echo  $array[$i]["auto"]; ?> </td><td> <?php echo $array[$i]["cochera"]; ?> </td><td> <?php echo $array[$i]["fecha"]; ?>
@@ -97,7 +148,31 @@ if(isset($_SESSION["administrador"]))
                 <?php
             }
         }
+        ?>
+
+        <table class='table table-bordered'>
+        <tr>
+            <th colspan='4'>Cantidad de operaciones</th>
+        </tr>
+        <tr>
+            <th>Empleado</th><th>Cantidad</th>
+        </tr>  
+<?php   
+        $arrayEmpleados=Empleado::TraerEmpleados();
+
+        foreach ($arrayEmpleados as $item) {
+            if($item["categoria"]!="admin")
+            {
+            ?>
+                <tr>
+                    <td>  <?php echo $item["usuario"]; ?> </td><td>  <?php echo  Empleado::totalOperacionesEmpleado($item["usuario"]);  ?></td>
+                </tr>
+                <?php
+            }
+        }
+
 ?>
+        
         </table></br></br><a href="menuAdmin.php">Volver al menu</a>
 <?php
 }

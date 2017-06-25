@@ -192,6 +192,8 @@ class Auto
         return false;
     }
 
+    
+
     public static function traerCochera($patente)
     {
         $pdo = new PDO("mysql:host=localhost;dbname=estacionamiento","root","");

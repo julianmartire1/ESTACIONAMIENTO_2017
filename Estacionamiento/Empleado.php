@@ -90,11 +90,7 @@ class Empleado
             $consulta = $pdo->prepare("SELECT `nombre`, `apellido`, `legajo`, `turno`, `categoria`, `usuario`, `pw`,`estado` FROM `empleados` ORDER BY Apellido, Nombre");
             $consulta->execute();
 
-            while($row = $consulta->fetch(PDO::FETCH_ASSOC))
-			{
-				$array[] = $row;
-			}
-            return $array;
+            return $consulta->fetchall(PDO::FETCH_ASSOC);
 
         } catch(PDOException $err){
             return array("ERROR" => $err->getMessage());
@@ -142,6 +138,26 @@ class Empleado
             $consulta->execute();
 
             return $consulta->fetchall(PDO::FETCH_ASSOC);
+
+        } catch(PDOException $err){
+            return array("ERROR" => $err->getMessage());
+        }
+    }
+
+    public static function totalOperacionesEmpleado($empleado)
+    {
+        try{
+            $pdo = new PDO("mysql:host=localhost;dbname=estacionamiento","root","");
+            $consulta = $pdo->prepare("SELECT `empleado` , `cantidad` FROM `operaciones` WHERE empleado='$empleado'");
+            $consulta->execute();
+
+            $array= $consulta->fetchall(PDO::FETCH_ASSOC);
+            $cantidad=0;
+            foreach ($array as $item) {
+                $cantidad+=$item["cantidad"];
+            }
+
+            return $cantidad;
 
         } catch(PDOException $err){
             return array("ERROR" => $err->getMessage());

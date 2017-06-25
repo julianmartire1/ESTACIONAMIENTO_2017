@@ -24,7 +24,8 @@ if(!isset($_SESSION["admnistrador"]) && !isset($_SESSION["empleado"]))
 {
 ?>
 	<div class="container">
-		<form action="logear.php" method="post">
+		</br></br>
+		<form action="logear.php" method="post" style="width: 90%; padding: 40px; margin: auto; box-shadow: 0px 0px 3px grey;">
 			</br>
 			<div class="form-group">
 				<label for="usr">Usuario:</label>

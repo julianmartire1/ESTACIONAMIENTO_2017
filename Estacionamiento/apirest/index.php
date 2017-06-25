@@ -144,7 +144,7 @@
 
                 $auxNumero=2;
                 $piso=Auto::traerCochera($patente);
-                $consulta = $pdo->prepare("INSERT INTO `operaciones`(`empleado`, `operacion`, `auto`, `cochera`, `fecha`, `cantidad`) VALUES ('$empleado',$auxNumero,'$patente','$piso',NOW(),$auxNumero)");
+                $consulta = $pdo->prepare("INSERT INTO `operaciones`(`empleado`, `operacion`, `auto`, `cochera`, `fecha`, `cantidad`) VALUES ('$empleado',$auxNumero,'$patente','$piso',NOW(),$auxNumero-1)");
                 $consulta->execute();
                 $json["opcion"] = "Tiene que pagar ".Auto::calcularCosto($fInicial)."$";
             }
