@@ -44,7 +44,13 @@
     	});
 
   function traerTodos(){
-    var pagina = "http://localhost/Estacionamiento/apirest/vehiculo";
+    var pagina = "http://localhost/Estacionamiento/apirest/vehiculoEst";
+    /*
+auto
+condicion
+reservado
+cantidad
+cochera*/
 
     $.ajax({
         type: 'GET',
@@ -54,25 +60,16 @@
     })
     .done(function (objJson) {
 
+      console.log(objJson);
+
         var tablaEncabezado = "<table class='table table-bordered'>";
-        tablaEncabezado += "<tr><th>Patente</th><th>Color</th><th>Marca</th><th>Fecha de ingreso</th><th>Fecha de Salida</th><th>Pago</th></tr>";
+        tablaEncabezado += "<tr><th>COCHERA</th><th>AUTO</th><th>RESERVADO</th><th>CANTIDAD</th>";
         var tablaCuerpo = "";
         var tablaPie = "</tr></table>";
 
         for(var i=0;i<objJson.length;i++){
-          tablaCuerpo += "<tr><td>"+objJson[i]["patente"]+"</td><td>"+objJson[i]["color"];
-          tablaCuerpo += "</td><td>"+objJson[i]["marca"]+"</td><td>"+objJson[i]["fechaInicial"]+"</td>";
-          if(objJson[i]["fechaSalida"]=="" && objJson[i]["pago"]==0)
-          {
-            tablaCuerpo += "<td>Todavía se encuentra en el estacionamiento</td><td>Todavía se encuentra en el estacionamiento</td>";            
-          }
-          else
-          {
-            tablaCuerpo += "<td>"+objJson[i]["fechaSalida"]+"</td><td>"+objJson[i]["pago"]+"</td>";
-          }
-            
-            //tablaCuerpo += "</td><td><a href='modificar.php' data-id='"+objJson[i]["id"]+"' onclick='administrarModificar("+objJson[i]["id"]+")' data-toggle='modal' data-target='#myModal' class='open-Modal'>MODIFICAR</a>&nbsp;";
-          //tablaCuerpo += "&nbsp;<a href='#' onclick='eliminar("+objJson[i].id+")'>ELIMINAR</a></td></tr>";
+          tablaCuerpo += "<tr><td>"+objJson[i]["cochera"]+"</td><td>"+objJson[i]["auto"];
+          tablaCuerpo += "</td><td>"+objJson[i]["reservado"]+"</td><td>"+objJson[i]["cantidad"]+"</td>";
     }
 
         $("#tabla").html(tablaEncabezado+tablaCuerpo+tablaPie);

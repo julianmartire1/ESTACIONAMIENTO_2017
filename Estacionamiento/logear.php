@@ -20,7 +20,7 @@
 <body>
 <?php
 session_start();
-if(!isset($_SESSION["admnistrador"]) && !isset($_SESSION["empleado"]))
+if(!isset($_SESSION["administrador"]) && !isset($_SESSION["empleado"]))
 {
 ?>
 	<div class="container">
@@ -45,13 +45,13 @@ if(!isset($_SESSION["admnistrador"]) && !isset($_SESSION["empleado"]))
 ///***********************************************************************************************///
 ///COMO CLIENTE DEL SERVICIO WEB///
 ///***********************************************************************************************///
-		
+
 //1.- INCLUIMOS LA LIBRERIA NUSOAP DENTRO DE NUESTRO ARCHIVO
 		require_once('lib/nusoap.php');
 
 //2.- INDICAMOS URL DEL WEB SERVICE
 		$host = 'http://localhost/Estacionamiento/SERVIDOR/testWS.php';
-		
+
 //3.- CREAMOS LA INSTANCIA COMO CLIENTE
 		$client = new nusoap_client($host . '?wsdl');
 
@@ -68,17 +68,17 @@ if(!isset($_SESSION["admnistrador"]) && !isset($_SESSION["empleado"]))
 //4.- INVOCAMOS AL METODO SOAP, PASANDOLE EL PARAMETRO DE ENTRADA
 		$result = $client->call('verificarUsuario', array($usuario));
 
-//5.- CHECKEAMOS POSIBLES ERRORES AL INVOCAR AL METODO DEL WS 
+//5.- CHECKEAMOS POSIBLES ERRORES AL INVOCAR AL METODO DEL WS
 		if ($client->fault) {
 			echo '<h2>ERROR AL INVOCAR METODO:</h2><pre>';
 			print_r($result);
 			echo '</pre>';
-		} 
+		}
 		else {// CHECKEAMOS POR POSIBLES ERRORES
 			$err = $client->getError();
 			if ($err) {//MOSTRAMOS EL ERROR
 				echo '<h2>ERROR EN EL CLIENTE:</h2><pre>' . $err . '</pre>';
-			} 
+			}
 			else {//MOSTRAMOS EL RESULTADO DEL METODO DEL WS.
 				//echo '<pre>' . $result . '</pre>';
 
@@ -87,7 +87,7 @@ if(!isset($_SESSION["admnistrador"]) && !isset($_SESSION["empleado"]))
 					session_start();
 					$_SESSION['administrador']=$_POST["usuario"];
 					header("Location:menuAdmin.php");
-					
+
 				}
 				else
 				{
@@ -108,7 +108,7 @@ if(!isset($_SESSION["admnistrador"]) && !isset($_SESSION["empleado"]))
 }
 else
 header("Location:menuAdmin.php");
-	
+
 	?>
 </body>
 </html>

@@ -55,11 +55,43 @@ class Auto
         return true;
     }
 
+    public static function traerUnAuto($patente)
+    {
+        try{
+            $pdo = new PDO("mysql:host=localhost;dbname=estacionamiento","root","");
+            $consulta = $pdo->prepare("SELECT `patente`, `color`, `marca`, `fechaInicial`, `fechaSalida`, `pago`, `esta` FROM `autos` WHERE patente='$patente'  ORDER BY patente");
+            $consulta->execute();
+            
+            $array=$consulta->fetchall(PDO::FETCH_ASSOC);
+
+            return $array;
+
+        } catch(PDOException $err){
+            return array("Error" => $err->getMessage());
+        }
+    }
+
+    public static function listarEstacionamiento()
+    {
+        try{
+            $pdo = new PDO("mysql:host=localhost;dbname=estacionamiento","root","");
+            $consulta = $pdo->prepare("SELECT `auto`, `condicion`, `reservado`, `cantidad`, `cochera` FROM `estacionamiento` ORDER BY cochera");
+            $consulta->execute();
+            
+            $array=$consulta->fetchall(PDO::FETCH_ASSOC);
+
+            return $array;
+
+        } catch(PDOException $err){
+            return array("Error" => $err->getMessage());
+        }
+    }
+
     public static function listarAutos()
     {
         try{
             $pdo = new PDO("mysql:host=localhost;dbname=estacionamiento","root","");
-            $consulta = $pdo->prepare("SELECT `patente`, `color`, `marca`, `fechaInicial`,`esta` FROM `autos` ORDER BY patente");
+            $consulta = $pdo->prepare("SELECT `patente`, `color`, `marca`, `fechaInicial`, `fechaSalida`, `pago`, `esta` FROM `autos` ORDER BY patente");
             $consulta->execute();
             
             $array=$consulta->fetchall(PDO::FETCH_ASSOC);
@@ -132,7 +164,7 @@ class Auto
         $consulta1->execute();
 
         $pdo2 = new PDO("mysql:host=localhost;dbname=estacionamiento","root","");
-        $consulta2 = $pdo2->prepare("UPDATE `autos` SET `esta`=0 WHERE patente='$patente'");
+        $consulta2 = $pdo2->prepare("UPDATE `autos` SET `esta`=0 ,`fechaSalida`=NOW()  WHERE patente='$patente'");
         $consulta2->execute();
 
         if($consulta1==true && $consulta2==true)

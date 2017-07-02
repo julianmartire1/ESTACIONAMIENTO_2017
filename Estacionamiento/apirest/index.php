@@ -23,13 +23,6 @@
     */
 
     $app = new \Slim\App(["settings" => $config]);
-/*
-    $app->get('/', function (Request $request, Response $response) {
-
-      $response->getBody()->write("Hola Slim con .htaccess");
-
-      return $response;
-    });*/
 
     $app->get('/vehiculo',
       function(Request $request,Response $response )
@@ -42,60 +35,67 @@
 
       });
 
-    $app->post('/vehiculo',
+      $app->get('/vehiculoEst',
       function(Request $request,Response $response )
       {
-          $band=false;
-          $band2=false;
-          $ArrayDeParametros = $request->getParsedBody();
+          $array=array();
+          $array=Auto::listarEstacionamiento();
 
-          $patente= $ArrayDeParametros['patente'];
-          $color= $ArrayDeParametros['color'];
-          $marca= $ArrayDeParametros['marca'];
-          $piso=$ArrayDeParametros['cochera'];
-          $empleado=$ArrayDeParametros['empleado'];
 
-      //return var_dump($ArrayDeParametros);
+          $response->getBody()->write(json_encode($array));
 
-          $fechaInicial= date("Y-m-d H:i:s");
+      });
 
-          $arraydeautos=Auto::listarAutos();
+    $app->post('/vehiculo',
+    function(Request $request,Response $response )
+    {
+        $band=false;
+        $band2=false;
+        $ArrayDeParametros = $request->getParsedBody();
 
-          if(count($arraydeautos)==0)
-          {
+        $patente= $ArrayDeParametros['patente'];
+        $color= $ArrayDeParametros['color'];
+        $marca= $ArrayDeParametros['marca'];
+        $piso=$ArrayDeParametros['cochera'];
+        $empleado=$ArrayDeParametros['empleado'];
+
+        //return var_dump($ArrayDeParametros);
+
+        $fechaInicial= date("Y-m-d H:i:s");
+
+        $arraydeautos=Auto::listarAutos();
+
+        if(count($arraydeautos)==0)
+        {
             $band2=true;
-          }
-          else
-          {
-            foreach ($arraydeautos as $item) {
-                if($item["patente"]==$patente)
+        }
+        else
+        {
+            foreach ($arraydeautos as $item) 
+            {
+                if($item["patente"]==$patente && $item["esta"]==1)
                 {
                     $json["opcion"] = "Ya existe el Auto";
                     return json_encode($json["opcion"]);
                 }
-                else
-                {                    
-                     $band2=true;
-                }
+                else                 
+                    $band2=true;
             }
-          }
+        }
 
 
         $array=array("patente"=>$patente,"color"=>$color,"marca"=>$marca,"cochera"=>$piso,"fechaInicial"=>$fechaInicial);
 
-          if($band2==true)
-            {
-                $band=Auto::agregarAutoAlEstacionamiento($array);
-                
-            }
-          else
-          {
-              $json["opcion"] = "Ya existe el Auto";
-              return json_encode($json["opcion"]);
-          }
+        if($band2==true)
+            $band=Auto::agregarAutoAlEstacionamiento($array);            
+        else
+        {
+            $json["opcion"] = "Ya existe el Auto";
+            return json_encode($json["opcion"]);
+        }
 
-          if($band)
-          {
+        if($band)
+        {
             $pdo = new PDO("mysql:host=localhost;dbname=estacionamiento","root","");
 
             $auxNumero=1;
@@ -106,22 +106,23 @@
 
 
             $json["opcion"] = "Auto Agregado ";
-             return json_encode($json["opcion"]);
-          }
-          else
-          {
-              $json["opcion"] = "Cochera no disponible";
-              return json_encode($json["opcion"]);
-          }
+            return json_encode($json["opcion"]);
+        }
+        else
+        {
+            $json["opcion"] = "Cochera no disponible";
+            return json_encode($json["opcion"]);
+        }
 
-          
+        
 
-      });
+    });
 
 
       $app->put('/vehiculo',
       function(Request $request,Response $response )
       {
+          $pago=0;
         $ArrayDeParametros = $request->getParsedBody();
         $band=false;
         $patente= $ArrayDeParametros['patente'];
@@ -140,18 +141,28 @@
                 $json["opcion"] = "Error al encontrar la fecha";
             else
             {
+
                 $pdo = new PDO("mysql:host=localhost;dbname=estacionamiento","root","");
 
                 $auxNumero=2;
                 $piso=Auto::traerCochera($patente);
                 $consulta = $pdo->prepare("INSERT INTO `operaciones`(`empleado`, `operacion`, `auto`, `cochera`, `fecha`, `cantidad`) VALUES ('$empleado',$auxNumero,'$patente','$piso',NOW(),$auxNumero-1)");
                 $consulta->execute();
-                $json["opcion"] = "Tiene que pagar ".Auto::calcularCosto($fInicial)."$";
+
+                $pago=Auto::calcularCosto($fInicial);
+
+                $pdo2 = new PDO("mysql:host=localhost;dbname=estacionamiento","root","");
+                $consulta2 = $pdo2->prepare("UPDATE `autos` SET `pago`=$pago  WHERE patente='$patente'");
+                $consulta2->execute();
+
+                $auto=Auto::traerUnAuto($patente);
+
+                $json["opcion"] = $auto[0];
             }
         }
 
 
-            return json_encode($json["opcion"]);
+        return json_encode($json["opcion"]);
           
 
       });

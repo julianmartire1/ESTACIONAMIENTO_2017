@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-06-2017 a las 00:00:38
+-- Tiempo de generación: 03-07-2017 a las 00:26:20
 -- Versión del servidor: 10.1.21-MariaDB
 -- Versión de PHP: 5.6.30
 
@@ -33,6 +33,8 @@ CREATE TABLE `autos` (
   `color` varchar(50) NOT NULL,
   `marca` varchar(50) NOT NULL,
   `fechaInicial` varchar(50) NOT NULL,
+  `fechaSalida` varchar(50) NOT NULL,
+  `pago` int(11) NOT NULL,
   `esta` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -40,15 +42,19 @@ CREATE TABLE `autos` (
 -- Volcado de datos para la tabla `autos`
 --
 
-INSERT INTO `autos` (`patente`, `color`, `marca`, `fechaInicial`, `esta`) VALUES
-('123', 'rojo', 'fiat', '2017-06-24 14:42:17', 0),
-('222', 'rojo', 'fiat', '2017-06-24 14:44:13', 0),
-('444', 'rojo', 'fiat', '2017-06-24 16:03:48', 0),
-('555', 'rojo', 'fiat', '2017-06-24 16:08:43', 0),
-('222', 'rojo', 'fiat', '2017-06-24 16:20:28', 1),
-('222', 'rojo', 'fiat', '2017-06-24 16:21:39', 1),
-('222', 'rojo', 'fiat', '2017-06-24 16:22:45', 1),
-('77777', 'rojo', 'fiat', '2017-06-24 16:25:53', 1);
+INSERT INTO `autos` (`patente`, `color`, `marca`, `fechaInicial`, `fechaSalida`, `pago`, `esta`) VALUES
+('123', 'rojo', 'fiat', '2017-06-24 14:42:17', '', 0, 0),
+('222', 'rojo', 'fiat', '2017-06-24 14:44:13', '', 0, 0),
+('444', 'rojo', 'fiat', '2017-06-24 16:03:48', '', 0, 0),
+('555', 'rojo', 'fiat', '2017-06-24 16:08:43', '', 0, 0),
+('222', 'rojo', 'fiat', '2017-06-24 16:20:28', '', 0, 1),
+('222', 'rojo', 'fiat', '2017-06-24 16:21:39', '', 0, 1),
+('222', 'rojo', 'fiat', '2017-06-24 16:22:45', '', 0, 1),
+('77777', 'rojo', 'fiat', '2017-06-24 16:25:53', '', 0, 1),
+('AAA123', 'rojo', 'fiat', '2017-07-02 18:20:55', '2017-07-02 18:21:10', 10, 0),
+('fff123', 'rojo', 'fiat', '2017-07-02 18:32:35', '2017-07-02 18:32:50', 10, 0),
+('mmm', 'rojo', 'fiat', '2017-07-02 18:34:42', '2017-07-02 18:35:00', 10, 0),
+('ooo', 'rojo', 'fiat', '2017-07-02 18:37:22', '2017-07-02 18:37:28', 10, 0);
 
 -- --------------------------------------------------------
 
@@ -108,7 +114,7 @@ INSERT INTO `estacionamiento` (`auto`, `condicion`, `reservado`, `cantidad`, `co
 ('nadie', 'nadie', 'normal', 0, '2E'),
 ('nadie', 'nadie', 'normal', 0, '2F'),
 ('nadie', 'nadie', 'normal', 0, '3A'),
-('nadie', 'nadie', 'normal', 0, '3B'),
+('nadie', 'nadie', 'normal', 4, '3B'),
 ('77777', 'ocupado', 'normal', 1, '3C'),
 ('222', 'ocupado', 'normal', 1, '3D'),
 ('222', 'ocupado', 'normal', 1, '3E'),
@@ -144,7 +150,15 @@ INSERT INTO `operaciones` (`empleado`, `operacion`, `auto`, `cochera`, `fecha`, 
 ('', 1, '222', '3F', '2017-06-24 16:20:28', 1),
 ('', 1, '222', '3E', '2017-06-24 16:21:39', 1),
 ('', 1, '222', '3D', '2017-06-24 16:22:45', 1),
-('', 1, '77777', '3C', '2017-06-24 16:25:53', 1);
+('', 1, '77777', '3C', '2017-06-24 16:25:53', 1),
+('', 1, 'AAA123', '3B', '2017-07-02 18:20:55', 1),
+('', 2, 'AAA123', '', '2017-07-02 18:21:10', 1),
+('', 1, 'fff123', '3B', '2017-07-02 18:32:35', 1),
+('', 2, 'fff123', '', '2017-07-02 18:32:50', 1),
+('', 1, 'mmm', '3B', '2017-07-02 18:34:42', 1),
+('', 2, 'mmm', '', '2017-07-02 18:35:00', 1),
+('', 1, 'ooo', '3B', '2017-07-02 18:37:22', 1),
+('', 2, 'ooo', '', '2017-07-02 18:37:28', 1);
 
 -- --------------------------------------------------------
 
